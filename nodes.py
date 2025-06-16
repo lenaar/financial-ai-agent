@@ -1,16 +1,18 @@
-from prompts import GATHER_FINANCIAL_PROMPT
+from prompts import GATHER_FINANCIAL_PROMPT, ANALYZE_DATA_PROMPT, RESEARCH_COMPETITORS_PROMPT
 from langchain_core.messages import SystemMessage, HumanMessage
 from model import model
 from typing import Dict, List
+from state import Queries
+from search_tool import tavily
 
-def gather_financial_data_node(content: str) -> Dict[str, List[str]]:
-
+def message_node(content: str, prompt: str) -> str:
     messages = [
-        SystemMessage(content=GATHER_FINANCIAL_PROMPT),
+        SystemMessage(content=prompt),
         HumanMessage(content=content)
     ]
 
-    financial_data = model.invoke(messages)
+    data = model.invoke(messages)
 
-    return financial_data.content
+    return data.content
+
 
