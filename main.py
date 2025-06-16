@@ -6,6 +6,7 @@ from csv_data import get_csv_data
 from model import generate_model_response
 from state import State
 from prompts import GATHER_FINANCIAL_PROMPT, ANALYZE_DATA_PROMPT
+from agent import build_graph_agent
 
 load_dotenv()
 
@@ -14,24 +15,21 @@ openai_api_key = os.getenv("OPENAI_API_KEY")
 model = ChatOpenAI(api_key=openai_api_key, model="gpt-4.1-nano", temperature=0.0)
 
 def main():
-    state = State(
-        analysis="",
-        competitors=[],
-        content=[],
-        csv_file="data/financial_data.csv",
-        feedback="",
-        financial_data="",
-        max_revisions=3,
-        report="",
-        revision_number=0,
-        task="analyze financial data"
-    )
-    content = get_csv_data(state)
-    financial_content = generate_model_response(content, GATHER_FINANCIAL_PROMPT)
-    print(financial_content)
-
-    analysis = generate_model_response(financial_content, ANALYZE_DATA_PROMPT)
-    print(analysis)
+    graph = build_graph_agent()
+    result = graph.invoke({
+        "competitors_names": [],
+        "competitors_content": [],
+        "csv_file": "data/financial_data.csv",
+        "feedback": "",
+        "financial_analysis": "",
+        "financial_data": "",
+        "max_revisions": 3,
+        "report": "",
+        "revisions": 0,
+        "task": "analyze financial data",
+    })
+    print("Final result:", result)
+    return graph
 
 if __name__ == "__main__":
     main()
