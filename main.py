@@ -3,7 +3,9 @@ from dotenv import load_dotenv
 from langchain_openai import ChatOpenAI
 from openai import OpenAI
 from csv_data import get_csv_data
-from nodes import gather_financial_data_node
+from nodes import message_node, analyze_financial_data_node
+from state import State
+from prompts import GATHER_FINANCIAL_PROMPT, ANALYZE_DATA_PROMPT
 
 load_dotenv()
 
@@ -12,9 +14,11 @@ openai_api_key = os.getenv("OPENAI_API_KEY")
 model = ChatOpenAI(api_key=openai_api_key, model="gpt-4.1-nano", temperature=0.0)
 
 def main():
-    content = get_csv_data()
-    financial_content = gather_financial_data_node(content)
-    print(financial_content)
+    state = State()
+    content = get_csv_data(state)
+    financial_content = message_node(content, GATHER_FINANCIAL_PROMPT)
+    analysis = message_node(financial_content, ANALYZE_DATA_PROMPT)
+    print(analysis)
 
 if __name__ == "__main__":
     main()
