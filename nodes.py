@@ -1,23 +1,13 @@
-from prompts import GATHER_FINANCIAL_PROMPT, ANALYZE_DATA_PROMPT, ANALYZE_COMPETITORS_PROMPT
+from prompts import ANALYZE_COMPETITORS_PROMPT, COMPARE_PERFORMANCE_PROMPT
 from langchain_core.messages import SystemMessage, HumanMessage
-from model import model
+from model import model, generate_model_response
 from typing import Dict, List
-from state import Queries
+from state import State,Queries
 from search_tool import tavily
 
-def message_node(content: str, prompt: str) -> str:
-    messages = [
-        SystemMessage(content=prompt),
-        HumanMessage(content=content)
-    ]
 
-    data = model.invoke(messages)
-
-    return data.content
-
-
-def analyze_competitors_node(content: str, competitors: List[str]) -> str:
-    for competitor in competitors:
+def analyze_competitors_node(competitors_content: str, competitors_names: List[str]) -> List[str]:
+    for competitor in competitors_names:
         queries = model.with_structured_output(Queries).invoke(
             [
                 SystemMessage(content=ANALYZE_COMPETITORS_PROMPT),
@@ -28,8 +18,10 @@ def analyze_competitors_node(content: str, competitors: List[str]) -> str:
     for query in queries.queries:
         research_content = tavily.search(query=query, max_results=2)
         for result in research_content["results"]:
-            content.append(result["content"])
+            competitors_content.append(result["content"])
 
 
-    return content
+    return competitors_content
+
+
 

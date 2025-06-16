@@ -3,7 +3,7 @@ from dotenv import load_dotenv
 from langchain_openai import ChatOpenAI
 from openai import OpenAI
 from csv_data import get_csv_data
-from nodes import message_node
+from model import generate_model_response
 from state import State
 from prompts import GATHER_FINANCIAL_PROMPT, ANALYZE_DATA_PROMPT
 
@@ -27,10 +27,10 @@ def main():
         task="analyze financial data"
     )
     content = get_csv_data(state)
-    financial_content = message_node(content, GATHER_FINANCIAL_PROMPT)
+    financial_content = generate_model_response(content, GATHER_FINANCIAL_PROMPT)
     print(financial_content)
 
-    analysis = message_node(financial_content, ANALYZE_DATA_PROMPT)
+    analysis = generate_model_response(financial_content, ANALYZE_DATA_PROMPT)
     print(analysis)
 
 if __name__ == "__main__":
