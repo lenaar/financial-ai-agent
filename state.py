@@ -3,7 +3,7 @@ from pydantic import BaseModel
 
 class State(TypedDict):
     competitors_names: List[str]
-    csv_file: str
+    csv_data: str
     feedback: str
     financial_analysis: str
     financial_data: str
