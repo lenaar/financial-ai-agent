@@ -1,6 +1,6 @@
 import prompts 
 from langchain_core.messages import SystemMessage, HumanMessage
-from model import model, generate_model_response, generate_model_response_with_structured_output
+from model import model, generate_model_response
 from typing import Dict, List
 from state import State, Queries
 from search_tool import tavily
