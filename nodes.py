@@ -7,10 +7,15 @@ from search_tool import tavily
 from csv_data import get_csv_data
 
 def gather_financial_data_node(state: State) -> State:
-    content = get_csv_data(state)
-    financial_content = generate_model_response(content, prompts.GATHER_FINANCIAL_PROMPT)
-    print(f"Financial content: {financial_content}")
-    return {"financial_data": financial_content}
+    try:
+        content = get_csv_data(state)
+        financial_content = generate_model_response(content, prompts.GATHER_FINANCIAL_PROMPT)
+        print(f"Financial content: {financial_content}")
+        state.update({"financial_data": financial_content})
+        return state
+    except Exception as e:
+        print(f"Error in gather_financial_data_node: {str(e)}")
+        raise
 
 def analyze_financial_data_node(state: State) -> State:
     analysis = generate_model_response(state["financial_data"], prompts.ANALYZE_DATA_PROMPT)
