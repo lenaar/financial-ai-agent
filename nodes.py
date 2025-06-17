@@ -3,7 +3,7 @@ from langchain_core.messages import SystemMessage, HumanMessage
 from model import model, generate_model_response
 from typing import Dict, List
 from state import State, Queries
-from search_tool import tavily
+from search_tool import tavily, cached_search
 from csv_data import get_csv_data
 from concurrent.futures import ThreadPoolExecutor
 
@@ -37,7 +37,7 @@ def analyze_competitors_node(state: State) -> State:
         )
 
         for query in queries.queries:
-            research_content = tavily.search(query=query, max_results=2)
+            research_content = cached_search(query=query)
             for result in research_content["results"]:
                 competitor_content.append(result["content"])
         return competitor_content
