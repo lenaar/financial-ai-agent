@@ -5,6 +5,7 @@ from typing import Dict, List
 from state import State, Queries
 from search_tool import tavily
 from csv_data import get_csv_data
+from concurrent.futures import ThreadPoolExecutor
 
 def gather_financial_data_node(state: State) -> State:
     try:
@@ -24,18 +25,27 @@ def analyze_financial_data_node(state: State) -> State:
 
 def analyze_competitors_node(state: State) -> State:
     competitors_content = state.get("full_content") or []
-    for competitor in state.get("competitors_names", []):
+    competitors_names = state.get("competitors_names") or []
+
+    def get_competitor_content(competitor: str) -> str:
+        competitor_content = []
         queries = model.with_structured_output(Queries).invoke(
             [
                 SystemMessage(content=prompts.ANALYZE_COMPETITORS_PROMPT),
                 HumanMessage(content=competitor)
             ]
         )
-    
+
         for query in queries.queries:
             research_content = tavily.search(query=query, max_results=2)
             for result in research_content["results"]:
-                competitors_content.append(result["content"])
+                competitor_content.append(result["content"])
+        return competitor_content
+
+    with ThreadPoolExecutor(max_workers=len(competitors_names)) as executor:
+        results = executor.map(get_competitor_content, competitors_names)
+        for result in results:
+            competitors_content.extend(result)
 
     print(f"Competitors content: {competitors_content}")
     return {"full_content": competitors_content}
