@@ -41,6 +41,25 @@ The agent follows a modular architecture with clear separation of concerns:
 - Beautiful Streamlit interface
 - Comprehensive test suite
 
+## Project Structure
+
+```
+financial-ai-agent/
+├── agent.py              # LangGraph agent definition and build
+├── csv_data.py          # CSV data processing
+├── data/                # Example data
+├── images/              # Screenshots
+├── main.py             # Streamlit application
+├── memory.py           # Memory and thread management
+├── model.py            # LLM integration
+├── nodes.py            # Agent nodes
+├── prompts.py          # System prompts
+├── requirements.txt    # Dependencies
+├── search_tool.py      # Tavily search integration
+├── state.py            # State definitions
+└── tests/              # Test suite
+```
+
 ## Installation
 
 1. Clone the repository:
@@ -133,35 +152,71 @@ The comprehensive report includes:
 
 ## Testing
 
-Run the test suite:
+```bash
+python -m pytest tests/
+```
+
+## Docker Deployment
+
+### Prerequisites
+
+- Docker installed on your system
+- API keys for Tavily and OpenAI
+
+### Building the Image
 
 ```bash
-pytest
+# Build the Docker image
+docker build -t financial-ai-agent .
 ```
 
-Run tests with coverage report:
+### Running the Container
+
+Basic run:
 
 ```bash
-pytest --cov
+docker run -d \
+  -p 8501:8501 \
+  -e TAVILY_API_KEY=your_key \
+  -e OPENAI_API_KEY=your_key \
+  --name financial-agent \
+  financial-ai-agent
 ```
 
-## Project Structure
+### Security Features
+
+The Docker setup includes several security features:
+
+- Non-root user execution
+- Minimal base image (Python slim)
+- Regular health checks
+- Proper file permissions
+- Clean dependency management
+- Network isolation options
+- Security-optimized runtime
+
+### Accessing the Application
+
+Once running, access the application at:
 
 ```
-financial-ai-agent/
-├── agent.py              # LangGraph agent definition and build
-├── csv_data.py          # CSV data processing
-├── data/                # Example data
-├── images/              # Screenshots
-├── main.py             # Streamlit application
-├── memory.py           # Memory and thread management
-├── model.py            # LLM integration
-├── nodes.py            # Agent nodes
-├── prompts.py          # System prompts
-├── requirements.txt    # Dependencies
-├── search_tool.py      # Tavily search integration
-├── state.py            # State definitions
-└── tests/              # Test suite
+http://localhost:8501
+```
+
+### Container Management
+
+```bash
+# View logs
+docker logs financial-agent
+
+# Stop container
+docker stop financial-agent
+
+# Remove container
+docker rm financial-agent
+
+# View container status
+docker ps -a
 ```
 
 ## Build Agent Flow
