@@ -2,6 +2,36 @@
 
 An intelligent agent that analyzes financial data, compares performance with competitors, and generates comprehensive reports using LangGraph and LangChain.
 
+## About
+
+This repository contains a sophisticated AI agent built with LangGraph and LangChain that automates financial analysis workflows. The agent processes financial data from CSV files, performs competitor analysis, and generates detailed reports with interactive feedback loops.
+
+### Key Components
+
+- **LangGraph Integration**: Uses LangGraph for building a robust agent workflow with state management and conditional branching
+- **LangChain Framework**: Leverages LangChain for LLM interactions and tool integrations
+- **Streamlit Interface**: Provides a user-friendly web interface for interacting with the agent
+- **Tavily Search**: Integrates with Tavily for real-time competitor research
+- **State Management**: Implements a custom state system for tracking analysis progress
+- **Memory System**: Maintains context across multiple analysis iterations
+
+### Architecture
+
+The agent follows a modular architecture with clear separation of concerns:
+
+- **Nodes**: Individual processing units for specific tasks
+- **State**: Centralized state management for data flow
+- **Tools**: External integrations (Tavily, LLM)
+- **Interface**: Streamlit-based user interaction
+
+### Use Cases
+
+- Financial performance analysis
+- Competitor benchmarking
+- Automated report generation
+- Interactive analysis refinement
+- Data-driven decision support
+
 ## Features
 
 - Financial data analysis from CSV files
