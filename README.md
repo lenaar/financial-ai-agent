@@ -133,3 +133,35 @@ financial-ai-agent/
 ├── state.py            # State definitions
 └── tests/              # Test suite
 ```
+
+## Build Agent Flow
+
+```mermaid
+flowchart TD
+    A[Start] --> B[Gather Financial Data]
+    B --> C[Analyze Financial Data]
+    C --> D[Analyze Competitors]
+    D --> E[Compare Performance]
+    E --> F[Collect Feedback]
+    F --> G{Should Continue?}
+    G -->|Yes| H[Write Report]
+    G -->|No| D
+    H --> I[End]
+
+    subgraph "Data Processing"
+        B
+        C
+    end
+
+    subgraph "Analysis Loop"
+        D
+        E
+        F
+        G
+    end
+
+    subgraph "Report Generation"
+        H
+    end
+
+```
