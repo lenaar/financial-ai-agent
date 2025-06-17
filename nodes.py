@@ -27,7 +27,7 @@ def analyze_competitors_node(state: State) -> State:
     competitors_content = state.get("full_content") or []
     competitors_names = state.get("competitors_names") or []
 
-    def get_competitor_content(competitor: str) -> str:
+    def get_competitor_content(competitor: str) -> List[str]:
         competitor_content = []
         queries = model.with_structured_output(Queries).invoke(
             [
