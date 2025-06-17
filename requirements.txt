@@ -1,9 +1,10 @@
-openai>=1.0.0
-pandas>=2.0.0
-python-dotenv>=1.0.0
-pytest>=7.0.0
 langgraph>=0.0.19
 langchain_community>=0.0.19
 langchain_openai>=0.0.19
 langchain-tavily
 langgraph-checkpoint-sqlite
+openai>=1.0.0
+pandas>=2.0.0
+python-dotenv>=1.0.0
+pytest>=7.0.0
+streamlit>=1.45.0
